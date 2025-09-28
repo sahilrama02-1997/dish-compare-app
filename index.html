@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DishCompare - Food Tasting Comparison App</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-utensils"></i>
+                <span>DishCompare</span>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#compare" class="nav-link">Compare</a>
+                <a href="#dashboard" class="nav-link">Dashboard</a>
+                <a href="#profile" class="nav-link" id="profileLink" style="display: none;">Profile</a>
+                <button class="btn btn-outline" id="loginBtn">Login</button>
+                <button class="btn btn-primary" id="signupBtn">Sign Up</button>
+                <button class="btn btn-secondary" id="logoutBtn" style="display: none;">Logout</button>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>Compare Dishes Like a Pro</h1>
+                <p>Rate and compare dishes using weighted tasting parameters. Make informed culinary decisions with our advanced comparison algorithm.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary btn-large" onclick="showSection('compare')">Start Comparing</button>
+                    <button class="btn btn-outline btn-large" onclick="showSection('features')">Learn More</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="dish-cards">
+                    <div class="dish-card">
+                        <i class="fas fa-pizza-slice"></i>
+                        <span>Pizza Margherita</span>
+                    </div>
+                    <div class="dish-card">
+                        <i class="fas fa-hamburger"></i>
+                        <span>Gourmet Burger</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2>Why Choose DishCompare?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-balance-scale"></i>
+                    <h3>Weighted Parameters</h3>
+                    <p>Set custom weights for different tasting criteria based on your preferences.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Detailed Analytics</h3>
+                    <p>Get comprehensive insights into your food preferences and tasting patterns.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Personal Profiles</h3>
+                    <p>Save your preferences and compare dishes based on your unique taste profile.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Compare Section -->
+    <section id="compare" class="compare-section" style="display: none;">
+        <div class="container">
+            <h2>Compare Dishes</h2>
+            <div class="compare-container">
+                <div class="dish-input-section">
+                    <div class="dish-input">
+                        <h3>Dish 1</h3>
+                        <input type="text" id="dish1Name" placeholder="Enter dish name" class="input-field">
+                        <div class="parameter-inputs">
+                            <div class="parameter-group">
+                                <label>Taste (Weight: <span id="tasteWeight1">30</span>%)</label>
+                                <input type="range" id="taste1" min="1" max="10" value="5" class="slider">
+                                <span class="score" id="tasteScore1">5</span>
+                            </div>
+                            <div class="parameter-group">
+                                <label>Presentation (Weight: <span id="presentationWeight1">20</span>%)</label>
+                                <input type="range" id="presentation1" min="1" max="10" value="5" class="slider">
+                                <span class="score" id="presentationScore1">5</span>
+                            </div>
+                            <div class="parameter-group">
+                                <label>Texture (Weight: <span id="textureWeight1">25</span>%)</label>
+                                <input type="range" id="texture1" min="1" max="10" value="5" class="slider">
+                                <span class="score" id="textureScore1">5</span>
+                            </div>
+                            <div class="parameter-group">
+                                <label>Aroma (Weight: <span id="aromaWeight1">15</span>%)</label>
+                                <input type="range" id="aroma1" min="1" max="10" value="5" class="slider">
+                                <span class="score" id="aromaScore1">5</span>
+                            </div>
+                            <div class="parameter-group">
+                                <label>Value (Weight: <span id="valueWeight1">10</span>%)</label>
+                                <input type="range" id="value1" min="1" max="10" value="5" class="slider">
+                                <span class="score" id="valueScore1">5</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="vs-divider">
+                        <span>VS</span>
+                    </div>
+                    
+                    <div class="dish-input">
+                        <h3>Dish 2</h3>
+                        <input type="text" id="dish2Name" placeholder="Enter dish name" class="input-field">
+                        <div class="parameter-inputs">
+                            <div class="parameter-group">
+                                <label>Taste (Weight: <span id="tasteWeight2">30</span>%)</label>
+                                <input type="range" id="taste2" min="1" max="10" value="5" class="slider">
+                                <span class="score" id="tasteScore2">5</span>
+                            </div>
+                            <div class="parameter-group">
+                                <label>Presentation (Weight: <span id="presentationWeight2">20</span>%)</label>
+                                <input type="range" id="presentation2" min="1" max="10" value="5" class="slider">
+                                <span class="score" id="presentationScore2">5</span>
+                            </div>
+                            <div class="parameter-group">
+                                <label>Texture (Weight: <span id="textureWeight2">25</span>%)</label>
+                                <input type="range" id="texture2" min="1" max="10" value="5" class="slider">
+                                <span class="score" id="textureScore2">5</span>
+                            </div>
+                            <div class="parameter-group">
+                                <label>Aroma (Weight: <span id="aromaWeight2">15</span>%)</label>
+                                <input type="range" id="aroma2" min="1" max="10" value="5" class="slider">
+                                <span class="score" id="aromaScore2">5</span>
+                            </div>
+                            <div class="parameter-group">
+                                <label>Value (Weight: <span id="valueWeight2">10</span>%)</label>
+                                <input type="range" id="value2" min="1" max="10" value="5" class="slider">
+                                <span class="score" id="valueScore2">5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="weight-settings">
+                    <h3>Adjust Parameter Weights</h3>
+                    <div class="weight-controls">
+                        <div class="weight-group">
+                            <label>Taste</label>
+                            <input type="range" id="tasteWeight" min="0" max="50" value="30" class="weight-slider">
+                            <span class="weight-value">30%</span>
+                        </div>
+                        <div class="weight-group">
+                            <label>Presentation</label>
+                            <input type="range" id="presentationWeight" min="0" max="50" value="20" class="weight-slider">
+                            <span class="weight-value">20%</span>
+                        </div>
+                        <div class="weight-group">
+                            <label>Texture</label>
+                            <input type="range" id="textureWeight" min="0" max="50" value="25" class="weight-slider">
+                            <span class="weight-value">25%</span>
+                        </div>
+                        <div class="weight-group">
+                            <label>Aroma</label>
+                            <input type="range" id="aromaWeight" min="0" max="50" value="15" class="weight-slider">
+                            <span class="weight-value">15%</span>
+                        </div>
+                        <div class="weight-group">
+                            <label>Value</label>
+                            <input type="range" id="valueWeight" min="0" max="50" value="10" class="weight-slider">
+                            <span class="weight-value">10%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary btn-large" id="compareBtn">Compare Dishes</button>
+                
+                <div id="results" class="results-section" style="display: none;">
+                    <h3>Comparison Results</h3>
+                    <div class="results-container">
+                        <div class="result-card">
+                            <h4 id="dish1ResultName">Dish 1</h4>
+                            <div class="score-circle">
+                                <span id="dish1FinalScore">0</span>
+                            </div>
+                            <div class="score-breakdown" id="dish1Breakdown"></div>
+                        </div>
+                        <div class="winner-badge" id="winnerBadge" style="display: none;">
+                            <i class="fas fa-trophy"></i>
+                            <span>Winner!</span>
+                        </div>
+                        <div class="result-card">
+                            <h4 id="dish2ResultName">Dish 2</h4>
+                            <div class="score-circle">
+                                <span id="dish2FinalScore">0</span>
+                            </div>
+                            <div class="score-breakdown" id="dish2Breakdown"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="dashboard-section" style="display: none;">
+        <div class="container">
+            <h2>Your Dashboard</h2>
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3>Recent Comparisons</h3>
+                    <div id="recentComparisons" class="comparison-list">
+                        <p class="empty-state">No comparisons yet. Start comparing dishes!</p>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Your Preferences</h3>
+                    <div class="preferences-display">
+                        <div class="preference-item">
+                            <span>Most Important Factor:</span>
+                            <span id="topPreference">Taste</span>
+                        </div>
+                        <div class="preference-item">
+                            <span>Total Comparisons:</span>
+                            <span id="totalComparisons">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section id="profile" class="profile-section" style="display: none;">
+        <div class="container">
+            <h2>Your Profile</h2>
+            <div class="profile-container">
+                <div class="profile-info">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="profile-details">
+                        <h3 id="userName">User Name</h3>
+                        <p id="userEmail">user@example.com</p>
+                        <p>Member since <span id="memberSince">2024</span></p>
+                    </div>
+                </div>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="profileTotalComparisons">0</span>
+                        <span class="stat-label">Comparisons</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="profileFavoriteDish">-</span>
+                        <span class="stat-label">Favorite Dish</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#" id="showSignup">Sign up</a></p>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Sign Up</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </form>
+            <p>Already have an account? <a href="#" id="showLogin">Login</a></p>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
