@@ -77,8 +77,25 @@ dish-compare-app/
 │   └── styles.css      # All styling and responsive design
 ├── js/
 │   └── app.js          # All functionality and logic
+├── ios-setup.md        # iOS deployment guide
 └── README.md           # This file
 ```
+
+## Deployment Options
+
+### AWS Deployment
+- **S3 Static Hosting**: Host the web app on AWS S3
+- **CloudFront CDN**: Global content delivery for better performance
+- **Route 53**: Custom domain configuration
+- **Lambda Functions**: Backend API for user data (optional)
+
+### iOS App Store
+- **PWA Conversion**: Convert to Progressive Web App
+- **Cordova/PhoneGap**: Hybrid mobile app
+- **Capacitor**: Modern hybrid approach
+- **React Native**: Full native rebuild
+
+See `ios-setup.md` for detailed iOS deployment instructions.
 
 ## Key Features Explained
 
@@ -98,15 +115,6 @@ The app uses a sophisticated weighted scoring system:
 - Touch-friendly sliders and buttons
 - Optimized layouts for different screen sizes
 
-## Customization
-
-You can easily customize the app by modifying:
-
-- **Parameters**: Add new tasting criteria in the HTML and JavaScript
-- **Weights**: Change default weight values in `app.js`
-- **Styling**: Modify colors, fonts, and layout in `styles.css`
-- **Features**: Add new functionality in `app.js`
-
 ## Technical Details
 
 - **Frontend**: Pure HTML, CSS, and JavaScript (no frameworks required)
@@ -122,20 +130,6 @@ You can easily customize the app by modifying:
 - Safari
 - Edge
 - Mobile browsers
-
-## Troubleshooting
-
-### App not loading?
-- Make sure you're opening `index.html` directly or through a local server
-- Check that all files are in the correct folder structure
-
-### Data not saving?
-- Ensure your browser allows localStorage
-- Try refreshing the page
-
-### Styling issues?
-- Clear your browser cache
-- Make sure `styles.css` is in the `css` folder
 
 ## Future Enhancements
 

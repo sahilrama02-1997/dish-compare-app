@@ -466,6 +466,19 @@ function showSection(sectionId) {
 // Initialize the app when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     window.dishCompareApp = new DishCompareApp();
+    
+    // Register Service Worker for PWA functionality
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then((registration) => {
+                    console.log('Service Worker registered successfully:', registration.scope);
+                })
+                .catch((error) => {
+                    console.log('Service Worker registration failed:', error);
+                });
+        });
+    }
 });
 
 // Add some demo data for first-time users
