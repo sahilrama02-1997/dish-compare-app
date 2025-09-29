@@ -3,14 +3,14 @@
 
 const CACHE_NAME = 'dishcompare-v1.0.0';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/css/styles.css',
-  '/js/app.js',
-  '/manifest.json',
-  '/icons/icon-192x192.png',
-  '/icons/icon-152x152.png',
-  '/icons/icon-180x180.png',
+  './',
+  './index.html',
+  './css/styles.css',
+  './js/app.js',
+  './manifest.json',
+  './icons/icon-192x192.png',
+  './icons/icon-152x152.png',
+  './icons/icon-180x180.png',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
 ];
 
@@ -63,7 +63,7 @@ self.addEventListener('fetch', (event) => {
       .catch(() => {
         // If both cache and network fail, show offline page
         if (event.request.destination === 'document') {
-          return caches.match('/index.html');
+          return caches.match('./index.html');
         }
       })
   );

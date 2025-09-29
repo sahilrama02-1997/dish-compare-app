@@ -72,6 +72,10 @@ class DishCompareApp {
         document.getElementById('loginForm').addEventListener('submit', (e) => this.handleLogin(e));
         document.getElementById('signupForm').addEventListener('submit', (e) => this.handleSignup(e));
 
+        // Hero buttons
+        document.getElementById('startComparingBtn').addEventListener('click', () => this.showSection('compare'));
+        document.getElementById('learnMoreBtn').addEventListener('click', () => this.showSection('features'));
+
         // Comparison
         document.getElementById('compareBtn').addEventListener('click', () => this.compareDishes());
 
