@@ -8,6 +8,9 @@ const urlsToCache = [
   '/css/styles.css',
   '/js/app.js',
   '/manifest.json',
+  '/icons/icon-192x192.png',
+  '/icons/icon-152x152.png',
+  '/icons/icon-180x180.png',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
 ];
 

@@ -20,7 +20,7 @@
     <!-- Apple Touch Icons -->
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
     <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180x180.png">
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/styles.css">
@@ -60,6 +60,14 @@
                 <div class="hero-buttons">
                     <button class="btn btn-primary btn-large" onclick="showSection('compare')">Start Comparing</button>
                     <button class="btn btn-outline btn-large" onclick="showSection('features')">Learn More</button>
+                </div>
+                <div class="pwa-install-prompt" id="pwaInstallPrompt" style="display: none;">
+                    <div class="install-banner">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Install DishCompare as an app for the best experience!</span>
+                        <button class="btn btn-small" onclick="installPWA()">Install</button>
+                        <button class="btn btn-small btn-outline" onclick="dismissInstallPrompt()">Later</button>
+                    </div>
                 </div>
             </div>
             <div class="hero-image">
@@ -342,5 +350,20 @@
     </div>
 
     <script src="js/app.js"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
 </body>
 </html>

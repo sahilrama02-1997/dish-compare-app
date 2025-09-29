@@ -19,6 +19,7 @@ class DishCompareApp {
         this.loadUserData();
         this.updateWeightDisplay();
         this.setupSliders();
+        this.setupPWAInstallPrompt();
     }
 
     setupEventListeners() {
@@ -28,8 +29,19 @@ class DishCompareApp {
                 e.preventDefault();
                 const section = e.target.getAttribute('href').substring(1);
                 this.showSection(section);
+                this.closeMobileMenu();
             });
         });
+
+        // Hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        
+        if (hamburger && navMenu) {
+            hamburger.addEventListener('click', () => {
+                this.toggleMobileMenu();
+            });
+        }
 
         // Authentication
         document.getElementById('loginBtn').addEventListener('click', () => this.showModal('loginModal'));
@@ -118,6 +130,26 @@ class DishCompareApp {
             this.loadDashboard();
         } else if (sectionId === 'profile') {
             this.loadProfile();
+        }
+    }
+
+    toggleMobileMenu() {
+        const navMenu = document.getElementById('navMenu');
+        const hamburger = document.getElementById('hamburger');
+        
+        if (navMenu && hamburger) {
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+    }
+
+    closeMobileMenu() {
+        const navMenu = document.getElementById('navMenu');
+        const hamburger = document.getElementById('hamburger');
+        
+        if (navMenu && hamburger) {
+            navMenu.classList.remove('active');
+            hamburger.classList.remove('active');
         }
     }
 
@@ -479,6 +511,50 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
         });
     }
+
+    // PWA Installation prompt
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        showInstallPrompt();
+    });
+
+    function showInstallPrompt() {
+        // Create install button
+        const installBtn = document.createElement('button');
+        installBtn.innerHTML = '📱 Install DishCompare App';
+        installBtn.className = 'btn btn-primary';
+        installBtn.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            padding: 12px 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s ease-out;
+        `;
+        
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                deferredPrompt = null;
+                installBtn.remove();
+            }
+        });
+        
+        document.body.appendChild(installBtn);
+        
+        // Auto-hide after 10 seconds
+        setTimeout(() => {
+            if (installBtn.parentNode) {
+                installBtn.remove();
+            }
+        }, 10000);
+    }
 });
 
 // Add some demo data for first-time users
@@ -504,4 +580,102 @@ if (!localStorage.getItem('dishCompareDemoData')) {
     
     localStorage.setItem('dishCompareComparisons', JSON.stringify(demoComparisons));
     localStorage.setItem('dishCompareDemoData', 'true');
+}
+
+// PWA Installation Methods
+function setupPWAInstallPrompt() {
+    let deferredPrompt;
+    const installPrompt = document.getElementById('pwaInstallPrompt');
+    
+    // Check if app is already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        return; // Already installed
+    }
+    
+    // Listen for the beforeinstallprompt event
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        showInstallPrompt();
+    });
+    
+    // Listen for app installed event
+    window.addEventListener('appinstalled', () => {
+        hideInstallPrompt();
+        console.log('PWA was installed');
+    });
+    
+    // Check if user dismissed the prompt before
+    const dismissed = localStorage.getItem('pwaInstallDismissed');
+    if (!dismissed && installPrompt) {
+        // Show prompt after a delay
+        setTimeout(() => {
+            showInstallPrompt();
+        }, 3000);
+    }
+}
+
+function showInstallPrompt() {
+    const installPrompt = document.getElementById('pwaInstallPrompt');
+    if (installPrompt) {
+        installPrompt.style.display = 'block';
+    }
+}
+
+function hideInstallPrompt() {
+    const installPrompt = document.getElementById('pwaInstallPrompt');
+    if (installPrompt) {
+        installPrompt.style.display = 'none';
+    }
+}
+
+function installPWA() {
+    // For iOS, we can't programmatically install, so show instructions
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        showIOSInstallInstructions();
+    } else {
+        // For other browsers, use the deferred prompt
+        if (window.deferredPrompt) {
+            window.deferredPrompt.prompt();
+            window.deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                } else {
+                    console.log('User dismissed the install prompt');
+                }
+                window.deferredPrompt = null;
+            });
+        }
+    }
+}
+
+function dismissInstallPrompt() {
+    hideInstallPrompt();
+    localStorage.setItem('pwaInstallDismissed', 'true');
+}
+
+function showIOSInstallInstructions() {
+    const instructions = `
+        <div class="ios-install-modal">
+            <div class="modal-content">
+                <h3>📱 Install DishCompare on iOS</h3>
+                <ol>
+                    <li>Tap the <strong>Share</strong> button (□↗) at the bottom of Safari</li>
+                    <li>Scroll down and tap <strong>"Add to Home Screen"</strong></li>
+                    <li>Tap <strong>"Add"</strong> to install the app</li>
+                    <li>Find the DishCompare icon on your home screen!</li>
+                </ol>
+                <button class="btn btn-primary" onclick="closeIOSInstructions()">Got it!</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', instructions);
+}
+
+function closeIOSInstructions() {
+    const modal = document.querySelector('.ios-install-modal');
+    if (modal) {
+        modal.remove();
+    }
 }
