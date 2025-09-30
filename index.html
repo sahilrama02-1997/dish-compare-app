@@ -23,7 +23,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180x180.png">
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css?v=2.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
@@ -306,17 +306,17 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Login</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="loginEmail">Email</label>
-                    <input type="email" id="loginEmail" required>
-                </div>
-                <div class="form-group">
-                    <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Login</button>
-            </form>
+            
+            <!-- Quick Login Options -->
+            <div class="quick-signup-options">
+                <button class="btn btn-google" id="gmailLoginBtn">
+                    <i class="fab fa-google"></i> Login with Gmail
+                </button>
+                <button class="btn btn-phone" id="phoneLoginBtn">
+                    <i class="fas fa-phone"></i> Login with Phone
+                </button>
+            </div>
+            
             <p>Don't have an account? <a href="#" id="showSignup">Sign up</a></p>
         </div>
     </div>
@@ -326,36 +326,81 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Sign Up</h2>
-            <form id="signupForm">
-                <div class="form-group">
-                    <label for="signupName">Full Name</label>
-                    <input type="text" id="signupName" required>
-                </div>
-                <div class="form-group">
-                    <label for="signupEmail">Email</label>
-                    <input type="email" id="signupEmail" required>
-                </div>
-                <div class="form-group">
-                    <label for="signupPassword">Password</label>
-                    <input type="password" id="signupPassword" required>
-                </div>
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm Password</label>
-                    <input type="password" id="confirmPassword" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Sign Up</button>
-            </form>
+            
+            <!-- Quick Signup Options -->
+            <div class="quick-signup-options">
+                <button class="btn btn-google" id="gmailSignupBtn">
+                    <i class="fab fa-google"></i> Sign up with Gmail
+                </button>
+                <button class="btn btn-phone" id="phoneSignupBtn">
+                    <i class="fas fa-phone"></i> Sign up with Phone
+                </button>
+            </div>
+            
             <p>Already have an account? <a href="#" id="showLogin">Login</a></p>
         </div>
     </div>
 
-    <script src="js/app.js"></script>
+    <!-- Phone Signup Modal -->
+    <div id="phoneSignupModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Sign Up with Phone</h2>
+            <form id="phoneSignupForm">
+                <div class="form-group">
+                    <label for="phoneSignupName">Full Name</label>
+                    <input type="text" id="phoneSignupName" required>
+                </div>
+                <div class="form-group">
+                    <label for="phoneSignupPhone">Phone Number</label>
+                    <input type="tel" id="phoneSignupPhone" placeholder="+1 (555) 123-4567" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Send OTP</button>
+            </form>
+            <p>We'll send you a verification code via SMS</p>
+        </div>
+    </div>
+
+    <!-- Phone Login Modal -->
+    <div id="phoneLoginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login with Phone</h2>
+            <form id="phoneLoginForm">
+                <div class="form-group">
+                    <label for="phoneLoginPhone">Phone Number</label>
+                    <input type="tel" id="phoneLoginPhone" placeholder="+1 (555) 123-4567" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Send OTP</button>
+            </form>
+            <p>We'll send you a verification code via SMS</p>
+        </div>
+    </div>
+
+    <!-- OTP Verification Modal -->
+    <div id="otpVerifyModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Verify Phone Number</h2>
+            <p>Enter the 6-digit code sent to <span id="otpPhoneNumber"></span></p>
+            <form id="otpVerifyForm">
+                <div class="form-group">
+                    <label for="otpCode">Verification Code</label>
+                    <input type="text" id="otpCode" placeholder="123456" maxlength="6" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Verify & Sign Up</button>
+            </form>
+            <p>Didn't receive the code? <a href="#" onclick="document.getElementById('otpVerifyModal').style.display='none'; document.getElementById('phoneSignupModal').style.display='block';">Try again</a></p>
+        </div>
+    </div>
+
+    <script src="js/app.js?v=2.0"></script>
     
     <!-- Service Worker Registration -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
+                navigator.serviceWorker.register('/sw.js?v=2.0')
                     .then((registration) => {
                         console.log('SW registered: ', registration);
                     })

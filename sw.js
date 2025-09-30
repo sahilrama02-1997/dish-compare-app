@@ -1,7 +1,7 @@
 // Service Worker for DishCompare PWA
 // This enables offline functionality and caching
 
-const CACHE_NAME = 'dishcompare-v1.0.0';
+const CACHE_NAME = 'dishcompare-v2.0.0';
 const urlsToCache = [
   './',
   './index.html',

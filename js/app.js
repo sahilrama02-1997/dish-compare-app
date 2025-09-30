@@ -11,6 +11,9 @@ class DishCompareApp {
             value: 10
         };
         
+        // Backend API URL
+        this.apiBaseUrl = 'http://localhost:3001/api';
+        
         this.init();
     }
 
@@ -68,9 +71,24 @@ class DishCompareApp {
             });
         });
 
-        // Forms
-        document.getElementById('loginForm').addEventListener('submit', (e) => this.handleLogin(e));
-        document.getElementById('signupForm').addEventListener('submit', (e) => this.handleSignup(e));
+        // Gmail OAuth and OTP buttons
+        const gmailSignupBtn = document.getElementById('gmailSignupBtn');
+        const gmailLoginBtn = document.getElementById('gmailLoginBtn');
+        const phoneSignupBtn = document.getElementById('phoneSignupBtn');
+        const phoneLoginBtn = document.getElementById('phoneLoginBtn');
+        
+        if (gmailSignupBtn) gmailSignupBtn.addEventListener('click', () => this.handleGmailSignup());
+        if (gmailLoginBtn) gmailLoginBtn.addEventListener('click', () => this.handleGmailLogin());
+        if (phoneSignupBtn) phoneSignupBtn.addEventListener('click', () => this.showPhoneSignupModal());
+        if (phoneLoginBtn) phoneLoginBtn.addEventListener('click', () => this.showPhoneLoginModal());
+        
+        const phoneSignupForm = document.getElementById('phoneSignupForm');
+        const phoneLoginForm = document.getElementById('phoneLoginForm');
+        const otpVerifyForm = document.getElementById('otpVerifyForm');
+        
+        if (phoneSignupForm) phoneSignupForm.addEventListener('submit', (e) => this.handlePhoneSignup(e));
+        if (phoneLoginForm) phoneLoginForm.addEventListener('submit', (e) => this.handlePhoneLogin(e));
+        if (otpVerifyForm) otpVerifyForm.addEventListener('submit', (e) => this.handleOTPVerification(e));
 
         // Hero buttons
         document.getElementById('startComparingBtn').addEventListener('click', () => this.showSection('compare'));
@@ -174,63 +192,6 @@ class DishCompareApp {
         document.body.style.overflow = 'auto';
     }
 
-    async handleSignup(e) {
-        e.preventDefault();
-        
-        const name = document.getElementById('signupName').value;
-        const email = document.getElementById('signupEmail').value;
-        const password = document.getElementById('signupPassword').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-
-        if (password !== confirmPassword) {
-            alert('Passwords do not match!');
-            return;
-        }
-
-        if (password.length < 6) {
-            alert('Password must be at least 6 characters long!');
-            return;
-        }
-
-        // Simulate user creation
-        this.currentUser = {
-            id: Date.now(),
-            name: name,
-            email: email,
-            memberSince: new Date().getFullYear(),
-            comparisons: 0,
-            preferences: { ...this.weights }
-        };
-
-        this.saveUserData();
-        this.updateAuthUI();
-        this.hideAllModals();
-        
-        alert('Account created successfully! Welcome to DishCompare!');
-    }
-
-    async handleLogin(e) {
-        e.preventDefault();
-        
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
-
-        // Simulate login (in real app, this would check against a database)
-        const savedUser = localStorage.getItem('dishCompareUser');
-        if (savedUser) {
-            const user = JSON.parse(savedUser);
-            if (user.email === email) {
-                this.currentUser = user;
-                this.saveUserData();
-                this.updateAuthUI();
-                this.hideAllModals();
-                alert('Login successful!');
-                return;
-            }
-        }
-        
-        alert('Invalid credentials. Please try again or sign up.');
-    }
 
     logout() {
         this.currentUser = null;
@@ -491,6 +452,166 @@ class DishCompareApp {
         );
 
         return favorite;
+    }
+
+    // Gmail OAuth Signup
+    async handleGmailSignup() {
+        try {
+            // Redirect to backend Gmail OAuth endpoint
+            window.location.href = `${this.apiBaseUrl}/auth/google`;
+        } catch (error) {
+            console.error('Gmail OAuth error:', error);
+            alert('Gmail signup failed. Please try again.');
+        }
+    }
+
+    // Gmail OAuth Login
+    async handleGmailLogin() {
+        try {
+            // Redirect to backend Gmail OAuth endpoint
+            window.location.href = `${this.apiBaseUrl}/auth/google`;
+        } catch (error) {
+            console.error('Gmail OAuth error:', error);
+            alert('Gmail login failed. Please try again.');
+        }
+    }
+
+    // Phone OTP Signup
+    showPhoneSignupModal() {
+        this.hideAllModals();
+        this.showModal('phoneSignupModal');
+    }
+
+    // Phone OTP Login
+    showPhoneLoginModal() {
+        this.hideAllModals();
+        this.showModal('phoneLoginModal');
+    }
+
+    async handlePhoneSignup(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('phoneSignupName').value;
+        const phone = document.getElementById('phoneSignupPhone').value;
+
+        if (!phone || phone.length < 10) {
+            alert('Please enter a valid phone number!');
+            return;
+        }
+
+        try {
+            // Call backend API to send OTP
+            const response = await fetch(`${this.apiBaseUrl}/auth/register/phone`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: name,
+                    phone: phone
+                })
+            });
+
+            if (response.ok) {
+                // Show OTP verification modal
+                this.hideModal('phoneSignupModal');
+                this.showModal('otpVerifyModal');
+                document.getElementById('otpPhoneNumber').textContent = phone;
+            } else {
+                const error = await response.json();
+                alert(`Failed to send OTP: ${error.message || 'Unknown error'}`);
+            }
+        } catch (error) {
+            console.error('Phone signup error:', error);
+            alert('Failed to send OTP. Please try again.');
+        }
+    }
+
+    async handlePhoneLogin(e) {
+        e.preventDefault();
+        
+        const phone = document.getElementById('phoneLoginPhone').value;
+
+        if (!phone || phone.length < 10) {
+            alert('Please enter a valid phone number!');
+            return;
+        }
+
+        try {
+            // Call backend API to send OTP for login
+            const response = await fetch(`${this.apiBaseUrl}/auth/register/phone`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    phone: phone
+                })
+            });
+
+            if (response.ok) {
+                // Show OTP verification modal
+                this.hideModal('phoneLoginModal');
+                this.showModal('otpVerifyModal');
+                document.getElementById('otpPhoneNumber').textContent = phone;
+            } else {
+                const error = await response.json();
+                alert(`Failed to send OTP: ${error.message || 'Unknown error'}`);
+            }
+        } catch (error) {
+            console.error('Phone login error:', error);
+            alert('Failed to send OTP. Please try again.');
+        }
+    }
+
+    async handleOTPVerification(e) {
+        e.preventDefault();
+        
+        const otp = document.getElementById('otpCode').value;
+        const phone = document.getElementById('otpPhoneNumber').textContent;
+
+        if (!otp || otp.length !== 6) {
+            alert('Please enter a valid 6-digit OTP!');
+            return;
+        }
+
+        try {
+            // Call backend API to verify OTP
+            const response = await fetch(`${this.apiBaseUrl}/auth/verify/phone`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    phone: phone,
+                    otp: otp
+                })
+            });
+
+            if (response.ok) {
+                const userData = await response.json();
+                this.currentUser = {
+                    id: userData.id || Date.now(),
+                    name: userData.name || 'User',
+                    email: userData.email || phone,
+                    memberSince: new Date().getFullYear(),
+                    comparisons: 0,
+                    preferences: { ...this.weights }
+                };
+
+                this.saveUserData();
+                this.updateAuthUI();
+                this.hideAllModals();
+                
+                alert('Account created successfully! Welcome to DishCompare!');
+            } else {
+                const error = await response.json();
+                alert(`OTP verification failed: ${error.message || 'Invalid OTP'}`);
+            }
+        } catch (error) {
+            console.error('OTP verification error:', error);
+            alert('OTP verification failed. Please try again.');
+        }
     }
 }
 
