@@ -11,8 +11,8 @@ class DishCompareApp {
             value: 10
         };
         
-        // Backend API URL - Mock responses for demo
-        this.apiBaseUrl = 'https://httpbin.org';
+        // Backend API URL - Demo mode (no backend needed)
+        this.apiBaseUrl = 'demo';
         
         this.init();
     }
