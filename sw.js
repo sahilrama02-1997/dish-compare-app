@@ -3,8 +3,8 @@
 
 const CACHE_NAME = 'dishcompare-v2.0.0';
 const urlsToCache = [
-  './',
-  './index.html',
+  'https://sahilrama02-1997.github.io/dish-compare-app/',
+  'https://sahilrama02-1997.github.io/dish-compare-app/index.html',
   './css/styles.css',
   './js/app.js',
   './manifest.json',

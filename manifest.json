@@ -2,7 +2,7 @@
   "name": "DishCompare - Food Tasting Comparison",
   "short_name": "DishCompare",
   "description": "Compare dishes using weighted tasting parameters. Rate and compare dishes based on taste, presentation, texture, aroma, and value.",
-  "start_url": "/",
+  "start_url": "https://sahilrama02-1997.github.io/dish-compare-app/",
   "display": "standalone",
   "background_color": "#667eea",
   "theme_color": "#667eea",
