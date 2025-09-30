@@ -11,8 +11,8 @@ class DishCompareApp {
             value: 10
         };
         
-        // Backend API URL
-        this.apiBaseUrl = 'http://34.201.102.145:3000/api';
+        // Backend API URL - Mock responses for demo
+        this.apiBaseUrl = 'https://httpbin.org';
         
         this.init();
     }
@@ -457,8 +457,24 @@ class DishCompareApp {
     // Gmail OAuth Signup
     async handleGmailSignup() {
         try {
-            // Redirect to backend Gmail OAuth endpoint
-            window.location.href = `${this.apiBaseUrl}/auth/google`;
+            // Mock Gmail OAuth for demo
+            alert('Gmail OAuth would redirect to Google for authentication. This is a demo version.');
+            
+            // Simulate successful signup
+            this.currentUser = {
+                id: Date.now(),
+                name: 'Demo User',
+                email: 'demo@gmail.com',
+                memberSince: new Date().getFullYear(),
+                comparisons: 0,
+                preferences: { ...this.weights }
+            };
+            
+            this.saveUserData();
+            this.updateAuthUI();
+            this.hideAllModals();
+            
+            alert('Demo signup successful! Welcome to DishCompare!');
         } catch (error) {
             console.error('Gmail OAuth error:', error);
             alert('Gmail signup failed. Please try again.');
@@ -468,8 +484,24 @@ class DishCompareApp {
     // Gmail OAuth Login
     async handleGmailLogin() {
         try {
-            // Redirect to backend Gmail OAuth endpoint
-            window.location.href = `${this.apiBaseUrl}/auth/google`;
+            // Mock Gmail OAuth for demo
+            alert('Gmail OAuth would redirect to Google for authentication. This is a demo version.');
+            
+            // Simulate successful login
+            this.currentUser = {
+                id: Date.now(),
+                name: 'Demo User',
+                email: 'demo@gmail.com',
+                memberSince: new Date().getFullYear(),
+                comparisons: 0,
+                preferences: { ...this.weights }
+            };
+            
+            this.saveUserData();
+            this.updateAuthUI();
+            this.hideAllModals();
+            
+            alert('Demo login successful! Welcome back!');
         } catch (error) {
             console.error('Gmail OAuth error:', error);
             alert('Gmail login failed. Please try again.');
@@ -500,27 +532,13 @@ class DishCompareApp {
         }
 
         try {
-            // Call backend API to send OTP
-            const response = await fetch(`${this.apiBaseUrl}/auth/register/phone`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: name,
-                    phone: phone
-                })
-            });
-
-            if (response.ok) {
-                // Show OTP verification modal
-                this.hideModal('phoneSignupModal');
-                this.showModal('otpVerifyModal');
-                document.getElementById('otpPhoneNumber').textContent = phone;
-            } else {
-                const error = await response.json();
-                alert(`Failed to send OTP: ${error.message || 'Unknown error'}`);
-            }
+            // Mock OTP sending for demo
+            alert('Demo: OTP would be sent to your phone. For demo, use OTP: 123456');
+            
+            // Show OTP verification modal
+            this.hideModal('phoneSignupModal');
+            this.showModal('otpVerifyModal');
+            document.getElementById('otpPhoneNumber').textContent = phone;
         } catch (error) {
             console.error('Phone signup error:', error);
             alert('Failed to send OTP. Please try again.');
@@ -576,24 +594,12 @@ class DishCompareApp {
         }
 
         try {
-            // Call backend API to verify OTP
-            const response = await fetch(`${this.apiBaseUrl}/auth/verify/phone`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    phone: phone,
-                    otp: otp
-                })
-            });
-
-            if (response.ok) {
-                const userData = await response.json();
+            // Mock OTP verification for demo
+            if (otp === '123456') {
                 this.currentUser = {
-                    id: userData.id || Date.now(),
-                    name: userData.name || 'User',
-                    email: userData.email || phone,
+                    id: Date.now(),
+                    name: 'Demo User',
+                    email: phone,
                     memberSince: new Date().getFullYear(),
                     comparisons: 0,
                     preferences: { ...this.weights }
@@ -603,10 +609,9 @@ class DishCompareApp {
                 this.updateAuthUI();
                 this.hideAllModals();
                 
-                alert('Account created successfully! Welcome to DishCompare!');
+                alert('Demo account created successfully! Welcome to DishCompare!');
             } else {
-                const error = await response.json();
-                alert(`OTP verification failed: ${error.message || 'Invalid OTP'}`);
+                alert('Demo: Use OTP 123456 for testing');
             }
         } catch (error) {
             console.error('OTP verification error:', error);
