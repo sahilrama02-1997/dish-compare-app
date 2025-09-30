@@ -12,7 +12,7 @@ class DishCompareApp {
         };
         
         // Backend API URL
-        this.apiBaseUrl = 'http://localhost:3001/api';
+        this.apiBaseUrl = 'http://34.201.102.145:3000/api';
         
         this.init();
     }
